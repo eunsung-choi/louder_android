@@ -65,9 +65,9 @@ public class FragSound extends ListFragment{
         setListAdapter(adapter);
 
         //아이템 추가
-        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_android_black_24dp), "Box", "Account Box Black 36dp");
-        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_android_black_24dp), "Box", "Account Box Black 36dp");
-        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_android_black_24dp), "Box", "Account Box Black 36dp");
+        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.siren), "사이렌", "Account Box Black 36dp");
+        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.boy), "살려주세요", "Account Box Black 36dp");
+        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.help), "도와주세요", "Account Box Black 36dp");
 
 
         return super.onCreateView(inflater, container, savedInstanceState);
