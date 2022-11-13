@@ -59,70 +59,34 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CustomCap;
+import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.RoundCap;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
 public class FragMap extends Fragment
-        implements OnMapReadyCallback ,
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        LocationListener
+        implements OnMapReadyCallback,
+        GoogleMap.OnPolylineClickListener,
+        GoogleMap.OnPolygonClickListener
 {
-    private static final LatLng DEFAULT_LOCATION = new LatLng(37.56, 126.97);
-    private static final String TAG = "googlemap_example";
-    private static final int GPS_ENABLE_REQUEST_CODE = 2001;
-    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 2002;
-    private static final int UPDATE_INTERVAL_MS = 15000;
-    private static final int FASTEST_UPDATE_INTERVAL_MS = 15000;
-
-    private GoogleMap googleMap = null;
     private MapView mapView = null;
-    private GoogleApiClient googleApiClient = null;
-    private Marker currentMarker = null;
-
-    private final static int MAXENTRIES = 5;
-    private String[] LikelyPlaceNames = null;
-    private String[] LikelyAddresses = null;
-    private String[] LikelyAttributions = null;
-    private LatLng[] LikelyLatLngs = null;
+    private static final int COLOR_BLACK_ARGB = 0xff000000;
+    private static final int POLYLINE_STROKE_WIDTH_PX = 12;
 
     public FragMap()
     {
         // required
     }
-    public void setCurrentLocation(Location location, String markerTitle, String markerSnippet) {
-        if ( currentMarker != null ) currentMarker.remove();
-        if ( location != null) {
-            //현재위치의 위도 경도 가져옴
-            LatLng currentLocation = new LatLng( location.getLatitude(), location.getLongitude());
 
-            MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(currentLocation);
-            markerOptions.title(markerTitle);
-            markerOptions.snippet(markerSnippet);
-            markerOptions.draggable(true);
-            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-            currentMarker = this.googleMap.addMarker(markerOptions);
-
-            this.googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
-            return;
-        }
-
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(DEFAULT_LOCATION);
-        markerOptions.title(markerTitle);
-        markerOptions.snippet(markerSnippet);
-        markerOptions.draggable(true);
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-        currentMarker = this.googleMap.addMarker(markerOptions);
-
-        this.googleMap.moveCamera(CameraUpdateFactory.newLatLng(DEFAULT_LOCATION));
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -150,8 +114,6 @@ public class FragMap extends Fragment
     public void onStop() {
         super.onStop();
         mapView.onStop();
-        if ( googleApiClient != null && googleApiClient.isConnected())
-            googleApiClient.disconnect();
     }
 
     @Override
@@ -164,19 +126,12 @@ public class FragMap extends Fragment
     public void onResume() {
         super.onResume();
         mapView.onResume();
-        if ( googleApiClient != null)
-            googleApiClient.connect();
     }
 
     @Override
     public void onPause() {
         super.onPause();
         mapView.onPause();
-
-        if ( googleApiClient != null && googleApiClient.isConnected()) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
-            googleApiClient.disconnect();
-        }
     }
 
     @Override
@@ -189,15 +144,6 @@ public class FragMap extends Fragment
     public void onDestroy() {
         super.onDestroy();
         mapView.onLowMemory();
-        if ( googleApiClient != null ) {
-            googleApiClient.unregisterConnectionCallbacks(this);
-            googleApiClient.unregisterConnectionFailedListener(this);
-
-            if ( googleApiClient.isConnected()) {
-                LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
-                googleApiClient.disconnect();
-            }
-        }
     }
 
     @Override
@@ -205,7 +151,6 @@ public class FragMap extends Fragment
         super.onActivityCreated(savedInstanceState);
 
         //액티비티가 처음 생성될 때 실행되는 함수
-        MapsInitializer.initialize(getActivity().getApplicationContext());
 
         if(mapView != null)
         {
@@ -215,178 +160,51 @@ public class FragMap extends Fragment
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        // OnMapReadyCallback implements 해야 mapView.getMapAsync(this); 사용가능. this 가 OnMapReadyCallback
+        //가짜위치데이터
+        String coordinates1[] = {"127.105714", "127.155714", "127.102714"};
+        String coordinates2[] = {"37.397446",  "37.497446","37.398446"};
+        //지도 중심 설정(마지막 위도경도로 변경해야함)
+        double lng = Double.parseDouble(coordinates1[0]);
+        double lat = Double.parseDouble(coordinates2[0]);
+        LatLng position = new LatLng(lat, lng);
+        //몇초마다 받아오는 위도 경도 데이터
+        double lng1 = Double.parseDouble(coordinates1[1]);
+        double lat1 = Double.parseDouble(coordinates2[1]);
+        double lng2 = Double.parseDouble(coordinates1[2]);
+        double lat2 = Double.parseDouble(coordinates2[2]);
 
-        this.googleMap = googleMap;
-
-        //런타임 퍼미션 요청 대화상자나 GPS 활성 요청 대화상자 보이기전에 지도의 초기위치를 서울로 이동
-        setCurrentLocation(null, "위치정보 가져올 수 없음", "위치 퍼미션과 GPS 활성 여부 확인");
-
-        //나침반이 나타나도록 설정
-        googleMap.getUiSettings().setCompassEnabled(true);
-        // 매끄럽게 이동함
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-
-        //  API 23 이상이면 런타임 퍼미션 처리 필요
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            // 사용권한체크
-            int hasFineLocationPermission = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION);
-
-            if ( hasFineLocationPermission == PackageManager.PERMISSION_DENIED) {
-                //사용권한이 없을경우
-                //권한 재요청
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-            } else {
-                //사용권한이 있는경우
-                if ( googleApiClient == null) {
-                    buildGoogleApiClient();
-                }
-
-                if ( ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-                {
-                    googleMap.setMyLocationEnabled(true);
-                }
-            }
-        } else {
-
-            if ( googleApiClient == null) {
-                buildGoogleApiClient();
-            }
-
-            googleMap.setMyLocationEnabled(true);
-        }
+        // 지도에 polylines 추가
+        Polyline polyline1 = googleMap.addPolyline(new PolylineOptions()
+                .clickable(true)
+                .add(
+                        new LatLng(lat, lng),
+                        new LatLng(lat1, lng1),
+                        new LatLng(lat2, lng2)));
 
 
-    }
+        //마커 설정
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(position);
+        markerOptions.title("서울");
+        markerOptions.snippet("수도");
+        googleMap.addMarker(markerOptions);
 
-    private void buildGoogleApiClient() {
-        googleApiClient = new GoogleApiClient.Builder(getActivity())
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .enableAutoManage(getActivity(), this)
-                .build();
-        googleApiClient.connect();
-    }
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(position));
 
-    public boolean checkLocationServicesStatus() {
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
-                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(13));
+        // Set listeners for click events.
+        googleMap.setOnPolylineClickListener(this);
+        googleMap.setOnPolygonClickListener(this);
+        polyline1.setTag("A");
     }
 
     @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        if ( !checkLocationServicesStatus()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle("위치 서비스 비활성화");
-            builder.setMessage("앱을 사용하기 위해서는 위치 서비스가 필요합니다.\n" +
-                    "위치 설정을 수정하십시오.");
-            builder.setCancelable(true);
-            builder.setPositiveButton("설정", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Intent callGPSSettingIntent =
-                            new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    startActivityForResult(callGPSSettingIntent, GPS_ENABLE_REQUEST_CODE);
-                }
-            });
-            builder.setNegativeButton("취소", new DialogInterface.OnClickListener(){
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.cancel();
-                }
-            });
-            builder.create().show();
-        }
-
-        LocationRequest locationRequest = new LocationRequest();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(UPDATE_INTERVAL_MS);
-        locationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_MS);
-
-        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if ( ActivityCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
-                LocationServices.FusedLocationApi
-                        .requestLocationUpdates(googleApiClient, locationRequest, this);
-            }
-        } else {
-            LocationServices.FusedLocationApi
-                    .requestLocationUpdates(googleApiClient, locationRequest, this);
-
-            this.googleMap.getUiSettings().setCompassEnabled(true);
-            this.googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-        }
+    public void onPolygonClick(@NonNull Polygon polygon) {
 
     }
 
     @Override
-    public void onConnectionSuspended(int cause) {
-        if ( cause ==  CAUSE_NETWORK_LOST )
-            Log.e(TAG, "onConnectionSuspended(): Google Play services " +
-                    "connection lost.  Cause: network lost.");
-        else if (cause == CAUSE_SERVICE_DISCONNECTED )
-            Log.e(TAG,"onConnectionSuspended():  Google Play services " +
-                    "connection lost.  Cause: service disconnected");
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Location location = new Location("");
-        location.setLatitude(DEFAULT_LOCATION.latitude);
-        location.setLongitude((DEFAULT_LOCATION.longitude));
-
-        setCurrentLocation(location, "위치정보 가져올 수 없음",
-                "위치 퍼미션과 GPS활성 여부 확인");
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        Log.i(TAG, "onLocationChanged call..");
-        searchCurrentPlaces();
-    }
-
-    private void searchCurrentPlaces() {
-        @SuppressWarnings("MissingPermission")
-        PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
-                .getCurrentPlace(googleApiClient, null);
-        result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>(){
-
-            @Override
-            public void onResult(@NonNull PlaceLikelihoodBuffer placeLikelihoods) {
-                int i = 0;
-                LikelyPlaceNames = new String[MAXENTRIES];
-                LikelyAddresses = new String[MAXENTRIES];
-                LikelyAttributions = new String[MAXENTRIES];
-                LikelyLatLngs = new LatLng[MAXENTRIES];
-
-                for(PlaceLikelihood placeLikelihood : placeLikelihoods) {
-                    LikelyPlaceNames[i] = (String) placeLikelihood.getPlace().getName();
-                    LikelyAddresses[i] = (String) placeLikelihood.getPlace().getAddress();
-                    LikelyAttributions[i] = (String) placeLikelihood.getPlace().getAttributions();
-                    LikelyLatLngs[i] = placeLikelihood.getPlace().getLatLng();
-
-                    i++;
-                    if(i > MAXENTRIES - 1 ) {
-                        break;
-                    }
-                }
-
-                placeLikelihoods.release();
-
-                Location location = new Location("");
-                location.setLatitude(LikelyLatLngs[0].latitude);
-                location.setLongitude(LikelyLatLngs[0].longitude);
-
-                setCurrentLocation(location, LikelyPlaceNames[0], LikelyAddresses[0]);
-            }
-        });
+    public void onPolylineClick(@NonNull Polyline polyline) {
 
     }
 }
