@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string-array name="array_voice">
+        <item>사이렌1</item>
+        <item>사이렌2</item>
+        <item>알림음1</item>
+        <item>알림음2</item>
+    </string-array>
+</resources>

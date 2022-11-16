@@ -19,6 +19,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceFragment;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -85,15 +86,17 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     case R.id.settingItem:
                         Log.i(TAG, "setting 들어옴");
-                        getSupportFragmentManager().beginTransaction().replace(R.id.main_layout, fragment_settings).commitAllowingStateLoss();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_layout, new FragSetting()).commit();
                         return true;
 
                 }
+
                 return true;
             }
         });
 
     }
+
 
     //알림 기능
     public void createNotification(View view) {
