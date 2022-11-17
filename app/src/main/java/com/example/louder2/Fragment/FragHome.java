@@ -39,7 +39,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.louder2.MainActivity;
+import com.example.louder2.Noti;
 import com.example.louder2.R;
+import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -74,7 +76,6 @@ public class FragHome extends Fragment {
             requestQueue = Volley.newRequestQueue(view.getContext());
         }
 
-
         return view;
     }
     //Volley 요청 보내기
@@ -85,6 +86,9 @@ public class FragHome extends Fragment {
             @Override
             public void onResponse(String response) {
                 println("응답 -> " + response);
+                Gson gson = new Gson();
+                Noti noti = gson.fromJson(response, Noti.class); //json -> object
+                println("soundID: "+noti.soundID+ "\ncreated At:"+noti.created_at);
             }
         },
                 new Response.ErrorListener() {
