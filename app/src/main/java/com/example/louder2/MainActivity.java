@@ -1,5 +1,7 @@
 package com.example.louder2;
 
+import static java.sql.DriverManager.println;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
@@ -21,10 +23,22 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.louder2.Fragment.FragHome;
 import com.example.louder2.Fragment.FragMap;
 import com.example.louder2.Fragment.FragSetting;
@@ -36,6 +50,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -49,11 +66,13 @@ public class MainActivity extends AppCompatActivity {
     //프래그먼트 변수
     Fragment fragment_home, fragment_sound, fragment_map, fragment_settings;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle("Louder");
 
         //지도
         //SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -95,8 +114,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-    }
 
+    }
 
     //알림 기능
     public void createNotification(View view) {
@@ -140,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
         //알림마다 고유한 id값이 존재한다(Object 받아오면 그 id값으로 하자)
         manager.notify(notinum++, builder.build());
     }
+    //알림 제거 함수
     public void removeNotificaton(View view){
         hide();
     }
