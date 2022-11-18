@@ -49,7 +49,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -58,7 +61,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     private GoogleMap mMap;
-    int notinum=0;
+    //int notinum=0;
     //바텀 네비게이션
     BottomNavigationView bottomNavigationView;
     private String TAG = "메인";
@@ -113,60 +116,80 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+        //FCM 연동하기
+//        Intent fcm = new Intent(getApplicationContext(), MyFirebaseMessaging.class);
+//        startService(fcm);
+//        Log.i("info", "FCM 서비스 시작");
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("TAG", "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        String msg = task.getResult();
+                        Log.println(Log.INFO,"token", msg);
+                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
 
 
     }
+//
+//    //알림 기능
+//    public void createNotification(View view) {
+//        show();
+//        Toast.makeText(this, "버튼 클릭 완료", Toast.LENGTH_LONG).show();
+//    }
+//
+//    private void show() {
+//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "default");
+//
+//        builder.setSmallIcon(R.mipmap.ic_launcher); //작은 아이콘
+//        builder.setContentTitle("알림 제목");
+//        builder.setContentText("알림 세부 텍스트");
+//
+//        Intent intent = new Intent(this, FragHome.class);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_MUTABLE); //FLAG_MUTABLE 또는 IMMUTABLE 만 가능
+//        builder.setContentIntent(pendingIntent);
+//
+//        //큰 아이콘
+//        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.siren);
+//        builder.setLargeIcon(largeIcon);
+//
+//        //색 지정
+//        builder.setColor(Color.RED);
+//
+//        //알림음
+//        Uri ringtoneUri = RingtoneManager.getActualDefaultRingtoneUri(this, RingtoneManager.TYPE_NOTIFICATION);
+//        builder.setSound(ringtoneUri);
+//
+//        //진동
+//        long[] vibrate = {0, 100, 200, 300};
+//        builder.setVibrate(vibrate);
+//        builder.setAutoCancel(true); //사용자가 알림 클릭시 자동 제거
+//
+//
+//        NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+//        //오레오 동작
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            manager.createNotificationChannel(new NotificationChannel("default", "기본 채널", NotificationManager.IMPORTANCE_DEFAULT));
+//        }
+//        //알림마다 고유한 id값이 존재한다(Object 받아오면 그 id값으로 하자)
+//        manager.notify(notinum++, builder.build());
+//    }
+//    //알림 제거 함수
+//    public void removeNotificaton(View view){
+//        hide();
+//    }
+//    public void hide(){
+//        //id 별로 noti 지움
+//        if(notinum>=0){
+//            NotificationManagerCompat.from(this).cancel(notinum--);
+//        }
+//    }
 
-    //알림 기능
-    public void createNotification(View view) {
-        show();
-        Toast.makeText(this, "버튼 클릭 완료", Toast.LENGTH_LONG).show();
-    }
-
-    private void show() {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "default");
-
-        builder.setSmallIcon(R.mipmap.ic_launcher); //작은 아이콘
-        builder.setContentTitle("알림 제목");
-        builder.setContentText("알림 세부 텍스트");
-
-        Intent intent = new Intent(this, FragHome.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_MUTABLE); //FLAG_MUTABLE 또는 IMMUTABLE 만 가능
-        builder.setContentIntent(pendingIntent);
-
-        //큰 아이콘
-        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.siren);
-        builder.setLargeIcon(largeIcon);
-
-        //색 지정
-        builder.setColor(Color.RED);
-
-        //알림음
-        Uri ringtoneUri = RingtoneManager.getActualDefaultRingtoneUri(this, RingtoneManager.TYPE_NOTIFICATION);
-        builder.setSound(ringtoneUri);
-
-        //진동
-        long[] vibrate = {0, 100, 200, 300};
-        builder.setVibrate(vibrate);
-        builder.setAutoCancel(true); //사용자가 알림 클릭시 자동 제거
-
-
-        NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-        //오레오 동작
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            manager.createNotificationChannel(new NotificationChannel("default", "기본 채널", NotificationManager.IMPORTANCE_DEFAULT));
-        }
-        //알림마다 고유한 id값이 존재한다(Object 받아오면 그 id값으로 하자)
-        manager.notify(notinum++, builder.build());
-    }
-    //알림 제거 함수
-    public void removeNotificaton(View view){
-        hide();
-    }
-    public void hide(){
-        //id 별로 noti 지움
-        if(notinum>=0){
-            NotificationManagerCompat.from(this).cancel(notinum--);
-        }
-    }
 }

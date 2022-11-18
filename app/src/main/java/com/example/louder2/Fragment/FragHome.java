@@ -4,6 +4,7 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 
 import android.app.NotificationChannel;
@@ -51,6 +52,9 @@ public class FragHome extends Fragment {
 
     private String TAG = "프래그먼트";
 
+    int notinum=0;
+    Button makenoti;
+
     //Volley 변수
     EditText mret;
     TextView mrtext;
@@ -75,6 +79,14 @@ public class FragHome extends Fragment {
         if(requestQueue==null){
             requestQueue = Volley.newRequestQueue(view.getContext());
         }
+        //알림
+        makenoti = view.findViewById(R.id.makenoti);
+        makenoti.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createNotification(view, null);
+            }
+        });
 
         return view;
     }
@@ -89,6 +101,10 @@ public class FragHome extends Fragment {
                 Gson gson = new Gson();
                 Noti noti = gson.fromJson(response, Noti.class); //json -> object
                 println("soundID: "+noti.soundID+ "\ncreated At:"+noti.created_at);
+                //알림 보냄
+                Log.i("info", "알림 보냄");
+                createNotification(view, noti); //알림 보냄
+
             }
         },
                 new Response.ErrorListener() {
@@ -108,6 +124,83 @@ public class FragHome extends Fragment {
     }
     public void println(String data){
         mrtext.append(data+"\n");
+    }
+
+
+    //알림 기능
+    public void createNotification(View view, Noti noti) {
+        show(noti);
+        Toast.makeText(getActivity(), "버튼 클릭 완료", Toast.LENGTH_LONG).show();
+    }
+
+    private void show(Noti noti) {
+        String title, detail;
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getActivity(), "default");
+
+        builder.setSmallIcon(R.mipmap.ic_launcher); //작은 아이콘
+        title = "";
+        detail="";
+        Bitmap largeIcon=null;
+        switch (noti.soundID){
+            //soundID==1
+            case 1:
+                title = "Louder : \"살려주세요\" 소리 발생";
+                detail = noti.created_at;
+                largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.boy);
+                break;
+            case 2:
+                title="도와주세요";
+                detail= noti.created_at;
+                largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.help);
+                break;
+            case 3:
+                title="울음소리";
+                detail = noti.created_at;
+                largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.crying); //아이콘
+                break;
+        }
+
+        builder.setContentTitle(title);
+        builder.setContentText(detail);
+
+        Intent intent = new Intent(getActivity(), FragHome.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), 0, intent, PendingIntent.FLAG_MUTABLE); //FLAG_MUTABLE 또는 IMMUTABLE 만 가능
+        builder.setContentIntent(pendingIntent);
+
+        //큰 아이콘
+        //largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.siren);
+        builder.setLargeIcon(largeIcon);
+
+        //색 지정
+        builder.setColor(Color.RED);
+
+        //알림음
+        Uri ringtoneUri = RingtoneManager.getActualDefaultRingtoneUri(getActivity(), RingtoneManager.TYPE_NOTIFICATION);
+        builder.setSound(ringtoneUri);
+
+        //진동
+        long[] vibrate = {0, 100, 200, 300};
+        builder.setVibrate(vibrate);
+        builder.setAutoCancel(true); //사용자가 알림 클릭시 자동 제거
+
+
+        NotificationManager manager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        //오레오 동작
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            manager.createNotificationChannel(new NotificationChannel("default", "기본 채널", NotificationManager.IMPORTANCE_DEFAULT));
+        }
+        //알림마다 고유한 id값이 존재한다(Object 받아오면 그 id값으로 하자)
+        manager.notify(notinum++, builder.build());
+    }
+    //알림 제거 함수
+    public void removeNotificaton(View view){
+        hide();
+    }
+    public void hide(){
+        //id 별로 noti 지움
+        if(notinum>=0){
+            NotificationManagerCompat.from(getActivity()).cancel(notinum--);
+        }
     }
 
 
