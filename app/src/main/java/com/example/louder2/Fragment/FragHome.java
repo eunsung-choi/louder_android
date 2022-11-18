@@ -129,7 +129,10 @@ public class FragHome extends Fragment {
 
     //알림 기능
     public void createNotification(View view, Noti noti) {
-        show(noti);
+        if(noti != null){
+            show(noti);
+        }
+
         Toast.makeText(getActivity(), "버튼 클릭 완료", Toast.LENGTH_LONG).show();
     }
 
@@ -144,17 +147,17 @@ public class FragHome extends Fragment {
         switch (noti.soundID){
             //soundID==1
             case 1:
-                title = "Louder : \"살려주세요\" 소리 발생";
+                title = "Louder : \"살려주세요\"";
                 detail = noti.created_at;
                 largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.boy);
                 break;
             case 2:
-                title="도와주세요";
+                title="Louder : \"도와주세요\"";
                 detail= noti.created_at;
                 largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.help);
                 break;
             case 3:
-                title="울음소리";
+                title="Louder : \"울음 소리\"";
                 detail = noti.created_at;
                 largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.crying); //아이콘
                 break;

@@ -64,7 +64,9 @@ public class FragSound extends ListFragment{
         adapter = new ListViewAdapter();
         setListAdapter(adapter);
 
-        //아이템 추가
+        final String[] sound = {"살려주세요", "도와주세요", "울음 소리"};
+
+        //알림이 오면 아이템 추가되게 하기
         adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.boy), "살려주세요", "Account Box Black 36dp");
         adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.help), "도와주세요", "Account Box Black 36dp");
         adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.crying2), "울음 소리", "Account Box Black 36dp");

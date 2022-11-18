@@ -1,41 +1,78 @@
 {
   "project_info": {
-    "project_number": "475755097208",
-    "project_id": "louder2",
-    "storage_bucket": "louder2.appspot.com"
+    "project_number": "802145818082",
+    "project_id": "mobile-push-4458c",
+    "storage_bucket": "mobile-push-4458c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:475755097208:android:4e582015e2c8131009d18d",
+        "mobilesdk_app_id": "1:802145818082:android:76d6743b144c6dd58755bb",
         "android_client_info": {
           "package_name": "com.example.louder2"
         }
       },
       "oauth_client": [
         {
-          "client_id": "475755097208-8er01budk5rrm0fhhdft1ingqb7q4nnm.apps.googleusercontent.com",
+          "client_id": "802145818082-6kng43b5ekrnd8649krsl5htndtpiurj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.louder2",
-            "certificate_hash": "69bb457408469a3547c3217d8275cc21b1e02c2f"
+            "certificate_hash": "a2023d0bda3314be5a42ab288c4d0c4f9a5ad4df"
           }
         },
         {
-          "client_id": "475755097208-eqhonqdk4cr9t0095doe5aj3j0eht76v.apps.googleusercontent.com",
+          "client_id": "802145818082-08ftgh4nntomtj5gn9kk60dn29lb67at.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCqAcYtnv9Tb8DMV2mOrBfwSTZFYRLDAYc"
+          "current_key": "AIzaSyBXJfYPzxe1MPOf7U5MapvjZfMhWjB-5dA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "475755097208-eqhonqdk4cr9t0095doe5aj3j0eht76v.apps.googleusercontent.com",
+              "client_id": "802145818082-08ftgh4nntomtj5gn9kk60dn29lb67at.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:802145818082:android:7c1daf32217378918755bb",
+        "android_client_info": {
+          "package_name": "com.example.moblie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "802145818082-sf9kvpvb8lmed8h4ajgh43s95msbt8ea.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.moblie",
+            "certificate_hash": "a2023d0bda3314be5a42ab288c4d0c4f9a5ad4df"
+          }
+        },
+        {
+          "client_id": "802145818082-08ftgh4nntomtj5gn9kk60dn29lb67at.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXJfYPzxe1MPOf7U5MapvjZfMhWjB-5dA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "802145818082-08ftgh4nntomtj5gn9kk60dn29lb67at.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

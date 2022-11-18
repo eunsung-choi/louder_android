@@ -117,24 +117,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //FCM 연동하기
-//        Intent fcm = new Intent(getApplicationContext(), MyFirebaseMessaging.class);
-//        startService(fcm);
-//        Log.i("info", "FCM 서비스 시작");
+        Intent fcm = new Intent(getApplicationContext(), MyFirebaseMessaging.class);
+        startService(fcm);
+        Log.i("info", "FCM 서비스 시작");
 
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w("TAG", "Fetching FCM registration token failed", task.getException());
-                            return;
-                        }
-
-                        String msg = task.getResult();
-                        Log.println(Log.INFO,"token", msg);
-                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    }
-                });
+//        FirebaseMessaging.getInstance().getToken()
+//                .addOnCompleteListener(new OnCompleteListener<String>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<String> task) {
+//                        if (!task.isSuccessful()) {
+//                            Log.w("TAG", "Fetching FCM registration token failed", task.getException());
+//                            return;
+//                        }
+//
+//                        String msg = task.getResult();
+//                        Log.println(Log.INFO,"token", msg);
+//                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+//                    }
+//                });
 
 
     }
