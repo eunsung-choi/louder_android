@@ -14,11 +14,17 @@ import android.widget.RemoteViews;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MyFirebaseMessaging extends FirebaseMessagingService {
     //생성자
@@ -48,7 +54,10 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
-        //Log.d("tag", "Refreshed token: "+token);
+        Log.d("tag", "Refreshed token: "+token);
+        StringRequest setToken = new RegistrationToken(token);
+        RequestQueue requestQueue = Volley.newRequestQueue(MyFirebaseMessaging.this);
+        requestQueue.add(setToken);
     }
 
     //알림 레이아웃 호출 함수
@@ -101,4 +110,18 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
 
     }
 
+}
+class RegistrationToken extends StringRequest {
+    final  static private String URL = "http://133.186.146.174:3000/devices/token";
+    private Map<String, String> parameters;
+
+    public RegistrationToken(String token){
+        super(Method.POST, URL, null, null);
+        parameters = new HashMap<>();
+        parameters.put("token", token);
+    }
+    @Override
+    protected Map<String, String> getParams() {
+        return parameters;
+    }
 }
