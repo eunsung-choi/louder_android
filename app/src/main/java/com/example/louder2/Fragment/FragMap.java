@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.content.res.AssetManager;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -128,42 +129,33 @@ public class FragMap extends Fragment
             //key의 value를 가져와 저장하기 위한 배열을 생성한다
             String[] getLatitude = new String[list_cnt]; //latitude 저장용
             String[] getLongitude = new String[list_cnt]; //longitude 저장용
+            double[] lat = new double[list_cnt];
+            double[] lng = new double[list_cnt];
 
             for (int i=0; i < jsonArray.length(); i++) {
                 JSONObject subJsonObject = jsonArray.getJSONObject(i);
                 getLatitude[i] = subJsonObject.getString("latitude");
                 getLongitude[i] = subJsonObject.getString("longitude");
-//                Log.i("JSON Object", subJsonObject + "");
-//                Log.i("JsonParsing", getLatitude[i] + "," + getLongitude[i]);
-//                System.out.println("longitude: " + getLongitude[i] + "\n" +
-//                        "latitude: " + getLatitude[i] + "\n" );
             }
-            //가짜위치데이터
-//            String coordinates1[] = {"126.9123491", "126.9129615", "126.9102446","126.9026641","126.8969600"};
-//            String coordinates2[] = {"35.1789830",  "35.1747862","35.1730735","35.1714412","35.1744604"};
-            //지도 중심 설정(마지막 위도경도로 변경해야함)
-            double lat = Double.parseDouble(getLatitude[0]);
-            double lng = Double.parseDouble(getLongitude[0]);
-            LatLng position = new LatLng(lat, lng);
             //몇초마다 받아오는 위도 경도 데이터
-            double lng1 = Double.parseDouble(getLongitude[1]);
-            double lat1 = Double.parseDouble(getLatitude[1]);
-            double lng2 = Double.parseDouble(getLongitude[2]);
-            double lat2 = Double.parseDouble(getLatitude[2]);
-            double lng3 = Double.parseDouble(getLongitude[3]);
-            double lat3 = Double.parseDouble(getLatitude[3]);
-            double lng4 = Double.parseDouble(getLongitude[4]);
-            double lat4 = Double.parseDouble(getLatitude[4]);
+            for (int i=0; i < jsonArray.length(); i++) {
+                lng[i] = Double.parseDouble(getLongitude[i]);
+                lat[i] = Double.parseDouble(getLatitude[i]);
+            }
+            //지도 중심 설정(마지막 위도경도로 변경해야함)
+            double lat_m = Double.parseDouble(getLatitude[list_cnt-1]);
+            double lng_m = Double.parseDouble(getLongitude[list_cnt-1]);
+            LatLng position = new LatLng(lat_m, lng_m);
 
-            // 지도에 polylines 추가
+            //지도에 polylines 추가
             Polyline polyline1 = googleMap.addPolyline(new PolylineOptions()
                     .clickable(true)
                     .add(
-                            new LatLng(lat, lng),
-                            new LatLng(lat1, lng1),
-                            new LatLng(lat2, lng2),
-                            new LatLng(lat3, lng3),
-                            new LatLng(lat4, lng4)));
+                            new LatLng(lat[0], lng[0]),
+                            new LatLng(lat[1], lng[1]),
+                            new LatLng(lat[2], lng[2]),
+                            new LatLng(lat[3], lng[3]),
+                            new LatLng(lat[4], lng[4])));
 
 
             //마커 설정
