@@ -31,15 +31,15 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
     public MyFirebaseMessaging() {
         super();
         //토큰 확인하기 - 서비스 실행시 토큰 가져옴
-        Task<String> token = FirebaseMessaging.getInstance().getToken();
-        token.addOnCompleteListener(new OnCompleteListener<String>() {
-            @Override
-            public void onComplete(@NonNull Task<String> task) {
-                if(task.isSuccessful()){
-                    Log.d("----------FCM Token: ", task.getResult());
-                }
-            }
-        });
+//        Task<String> token = FirebaseMessaging.getInstance().getToken();
+//        token.addOnCompleteListener(new OnCompleteListener<String>() {
+//            @Override
+//            public void onComplete(@NonNull Task<String> task) {
+//                if(task.isSuccessful()){
+//                    Log.d("----------FCM Token: ", task.getResult());
+//                }
+//            }
+//        });
     }
     //Push 메세지 수신시 할 작업 작성
     @Override

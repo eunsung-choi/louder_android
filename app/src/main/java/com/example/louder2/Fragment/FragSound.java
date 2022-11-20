@@ -18,59 +18,45 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.ListFragment;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.louder2.ListViewAdapter;
 import com.example.louder2.ListViewItem;
+import com.example.louder2.Noti;
 import com.example.louder2.R;
+import com.google.gson.Gson;
 
-//public class FragSound extends Fragment {
-//    private View view;
-//
-//    private String TAG = "프래그먼트";
-//    public FragSound(){ //빈 생성자
-//
-//    }
-//
-//    @Nullable
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//
-//        Log.i(TAG, "onCreateView");
-//        view = inflater.inflate(R.layout.frag_sound, container, false);
-//        // ListView 아이템 데이터 정의
-//        String[] menuItems = {"number one", "number two", "number three", "number four"};
-//
-//        ListView listView = (ListView) view.findViewById(R.id.mainMenu);
-//
-//        // 어댑터 생성(데이터 입력받음)
-//        //Activity의 참조 획득이 가능한 getActivity()함수 사용 (Fragment는 this 사용 불가)
-//        ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, menuItems);
-//
-//        listView.setAdapter(listViewAdapter);
-//        return view;
-//    }
-//    public void onListItemClick (ListView l, View v, int position, long id) {
-//        // get TextView's Text.
-//        String strText = (String) l.getItemAtPosition(position).toString() ;
-//        // TODO
-//        Toast.makeText(getActivity(), strText, Toast.LENGTH_LONG).show();
-//    }
-//
-//}
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 public class FragSound extends ListFragment{
     ListViewAdapter adapter;
+    //Volley
+    static RequestQueue requestQueue; //요청 큐
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+
         //Adapter 생성 및 Adapter 지정
         adapter = new ListViewAdapter();
         setListAdapter(adapter);
 
-        final String[] sound = {"살려주세요", "도와주세요", "울음 소리"};
 
-        //알림이 오면 아이템 추가되게 하기
-        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.boy), "살려주세요", "Account Box Black 36dp");
-        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.help), "도와주세요", "Account Box Black 36dp");
-        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.crying2), "울음 소리", "Account Box Black 36dp");
-
+        //Volley
+        if(requestQueue==null){
+            requestQueue = Volley.newRequestQueue(getContext());
+        }
+        Log.i("log", "makeRequest");
+        makeRequest(); //volley 요청 보냄
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -90,4 +76,50 @@ public class FragSound extends ListFragment{
     public void addItem(Drawable icon, String title, String desc){
         adapter.addItem(icon, title, desc);
     }
+
+    //Volley 요청 보내기
+    public void makeRequest(){
+        Log.i("info","request 보냈다.");
+        ArrayList<Noti> items = new ArrayList<Noti>(); // json 담을 배열
+        String url = "http://133.186.146.174:3000/devices/sound"; //요청 보낼 URL
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try{
+                    JSONArray array = new JSONArray(response);
+                    items.clear();
+                    for(int i=0; i<array.length();i++){
+                        JSONObject obj=array.getJSONObject(i);
+                        items.add(new Noti(obj.getInt("soundID"),
+                                obj.getDouble("latitude"),
+                                obj.getDouble("longitude"),
+                                obj.getString("created_at")));
+                    }
+                    Log.i("json", array.toString());
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+
+                //리스트에 item 추가
+                setListAdapter(adapter);
+                for(int i=0; i< 8;i++){ //items.size()로 바꿀수도 있음
+                    adapter.addItem(ContextCompat.getDrawable(getActivity(), items.get(i).icon), items.get(i).name, items.get(i).created_at);
+                }
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("error", "에러 발생");
+                    }
+                }){
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                return params;
+            }
+        };
+        request.setShouldCache(false);
+        requestQueue.add(request);
+    }
+
 }

@@ -1,11 +1,38 @@
 package com.example.louder2;
 
+import android.graphics.drawable.Drawable;
+
+import androidx.core.content.ContextCompat;
+
 public class Noti {
-    public String _id;
-    public Integer soundID;
-    public Double latitude;
-    public Double longitude;
+    public int soundID;
+    public double latitude;
+    public double longitude;
     public String created_at;
-    public Integer __v;
+
+    public int icon;
+    public String name;
+    public Noti(int soundID, double latitude, double longitude, String created_at){
+        this.soundID = soundID;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.created_at = created_at;
+
+        switch(this.soundID){ //아이콘 설정
+            case 1: //살려주세요
+                this.name="살려주세요";
+                this.icon = R.drawable.boy;
+                break;
+            case 2:
+                this.name="도와주세요";
+                this.icon = R.drawable.help;
+                break;
+            case 3:
+                this.name="울음 소리";
+                this.icon = R.drawable.crying2;
+                break;
+
+        }
+    }
 
 }
