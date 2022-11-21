@@ -3,12 +3,12 @@
     <style name="Theme.Louder2" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="windowNoTitle">true</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_cute</item>
+        <!-- Primary brand color. 버튼,바텀바색-->
+        <item name="colorPrimary">@color/blue_zoom</item>
         <item name="colorPrimaryVariant">@color/white</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/grey_3</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/purple_cute</item>
+        <item name="colorSecondary">@color/blue_zoom</item>
         <item name="colorSecondaryVariant">@color/purple_cute</item>
         <item name="colorOnSecondary">@color/grey_1</item>
         <!-- Status bar color. -->
