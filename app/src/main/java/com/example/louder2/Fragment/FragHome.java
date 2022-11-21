@@ -51,15 +51,44 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FragHome extends Fragment {
+    MainActivity activity;
     private View view;
     private String TAG = "프래그먼트";
+
+    @Override
+    public void onAttach(Context context){
+        super.onAttach(context);
+        activity = (MainActivity) getActivity();
+    }
+
+    @Override
+    public void onDetach(){
+        super.onDetach();
+        activity=null;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.frag_home,container,false);
         Log.i(TAG, "onCreateView");
-        view = inflater.inflate(R.layout.frag_home, container, false);
+//        view = inflater.inflate(R.layout.frag_home, container, false);
+        Button button1 = (Button)rootView.findViewById(R.id.button1);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                activity.onFragmentChange(0);
+            }
+        });
+        Button button2 = (Button)rootView.findViewById(R.id.button2);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                activity.onFragmentChange(1);
+            }
+        });
 
-        return view;
+        return rootView;
     }
 
 }
