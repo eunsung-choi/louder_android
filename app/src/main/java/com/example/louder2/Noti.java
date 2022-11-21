@@ -23,7 +23,7 @@ public class Noti {
         switch(this.soundID){ //아이콘 설정
             case 1: //살려주세요
                 this.name="살려주세요";
-                this.icon = R.drawable.boy;
+                this.icon = R.drawable.paranoia2;
                 break;
             case 2:
                 this.name="도와주세요";
@@ -31,7 +31,7 @@ public class Noti {
                 break;
             case 3:
                 this.name="울음 소리";
-                this.icon = R.drawable.crying2;
+                this.icon = R.drawable.baby;
                 break;
 
         }

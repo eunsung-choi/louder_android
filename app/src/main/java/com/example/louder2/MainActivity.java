@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         fragment_settings = new FragSetting();
         //바텀 네비게이션
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_layout, fragment_home).commitAllowingStateLoss();
         // 리스너 등록
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
