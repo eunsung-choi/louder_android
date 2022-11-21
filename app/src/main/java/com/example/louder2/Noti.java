@@ -36,5 +36,9 @@ public class Noti {
 
         }
     }
+    public Noti(double latitude, double longitude){
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.example.louder2.Fragment;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.content.res.AssetManager;
@@ -14,6 +15,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.louder2.Noti;
 import com.example.louder2.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -33,6 +42,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FragMap extends Fragment
         implements OnMapReadyCallback,
@@ -42,6 +54,9 @@ public class FragMap extends Fragment
     private MapView mapView = null;
     private static final int COLOR_BLACK_ARGB = 0xff000000;
     private static final int POLYLINE_STROKE_WIDTH_PX = 12;
+    static RequestQueue requestQueue; //요청 큐
+    ArrayList<Noti> items = new ArrayList<Noti>(); // json 담을 배열
+    public int array_length;
     public FragMap()
     {
         // required
@@ -56,6 +71,12 @@ public class FragMap extends Fragment
         View layout = inflater.inflate(R.layout.frag_map, container, false);
         mapView = (MapView)layout.findViewById(R.id.map);
         mapView.getMapAsync(this);
+        //Volley
+        if(requestQueue==null){
+            requestQueue = Volley.newRequestQueue(getContext());
+        }
+        makeRequest();
+
         return layout;
     }
     @Override
@@ -100,51 +121,23 @@ public class FragMap extends Fragment
         if(mapView != null)
         {
             mapView.onCreate(savedInstanceState);
+
         }
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-//        String json = "";
-        AssetManager assetManager = getContext().getAssets(); //assets폴더의 파을일 가져오기 위해 창고관리자(AssetManager) 얻어오기
-        // assets/test.json 파일을 읽기 위한 InputStream
-        try {
-            InputStream is = assetManager.open("jsons/test.json");
-            InputStreamReader isr = new InputStreamReader(is);
-            BufferedReader reader = new BufferedReader(isr);
+            double[] lat = new double[array_length];
+            double[] lng = new double[array_length];
 
-            StringBuffer buffer = new StringBuffer();
-            String line = reader.readLine();
-            while (line != null) {
-                buffer.append(line + "\n");
-                line = reader.readLine();
-            }
-            String jsonData=buffer.toString(); //Json Array를 파싱해서 String으로 가져옴
-
-            JSONObject jsonObject = new JSONObject(jsonData); // json 객체 생성
-            String path = jsonObject.getString("path");
-            JSONArray jsonArray = new JSONArray(path);
-            int list_cnt = jsonArray.length(); //Json 배열 내 JSON 데이터 개수를 가져옴
-
-            //key의 value를 가져와 저장하기 위한 배열을 생성한다
-            String[] getLatitude = new String[list_cnt]; //latitude 저장용
-            String[] getLongitude = new String[list_cnt]; //longitude 저장용
-            double[] lat = new double[list_cnt];
-            double[] lng = new double[list_cnt];
-
-            for (int i=0; i < jsonArray.length(); i++) {
-                JSONObject subJsonObject = jsonArray.getJSONObject(i);
-                getLatitude[i] = subJsonObject.getString("latitude");
-                getLongitude[i] = subJsonObject.getString("longitude");
-            }
             //몇초마다 받아오는 위도 경도 데이터
-            for (int i=0; i < jsonArray.length(); i++) {
-                lng[i] = Double.parseDouble(getLongitude[i]);
-                lat[i] = Double.parseDouble(getLatitude[i]);
+            for (int i=0; i < array_length; i++) {
+                lng[i] = items.get(i).longitude;
+                lat[i] = items.get(i).latitude;
             }
             //지도 중심 설정(마지막 위도경도로 변경해야함)
-            double lat_m = Double.parseDouble(getLatitude[list_cnt-1]);
-            double lng_m = Double.parseDouble(getLongitude[list_cnt-1]);
+            double lat_m = lat[array_length-1];
+            double lng_m = lng[array_length-1];
             LatLng position = new LatLng(lat_m, lng_m);
 
             //지도에 polylines 추가
@@ -172,12 +165,6 @@ public class FragMap extends Fragment
             googleMap.setOnPolylineClickListener(this);
             googleMap.setOnPolygonClickListener(this);
             polyline1.setTag("A");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -186,4 +173,46 @@ public class FragMap extends Fragment
     @Override
     public void onPolylineClick(@NonNull Polyline polyline) {
     }
+    //Volley 요청 보내기
+    public void makeRequest(){
+        Log.i("info","request 보냈다.");
+
+        String url = "http://133.186.146.174:3000/devices/path"; //요청 보낼 URL
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try{
+                    JSONArray array = new JSONArray(response);
+                    items.clear();
+                    array_length = array.length();
+                    for(int i=0; i<array.length();i++){
+                        JSONObject obj=array.getJSONObject(i);
+                        items.add(new Noti(
+                                obj.getDouble("latitude"),
+                                obj.getDouble("longitude")
+                                ));
+                    }
+
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+
+
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("error", "에러 발생");
+                    }
+                }){
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                return params;
+            }
+        };
+        request.setShouldCache(false);
+        requestQueue.add(request);
+    }
+
 }
