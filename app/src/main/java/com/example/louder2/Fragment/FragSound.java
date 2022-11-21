@@ -73,8 +73,8 @@ public class FragSound extends ListFragment{
 
     }
     //item 추가를 위한 함수, 앱 실행 중 동적으로, ListFragment 외부에서 데이터 추가방법
-    public void addItem(Drawable icon, String title, String desc){
-        adapter.addItem(icon, title, desc);
+    public void addItem(Drawable icon, String title, String desc, String address){
+        adapter.addItem(icon, title, desc, address);
     }
 
     //Volley 요청 보내기
@@ -93,7 +93,8 @@ public class FragSound extends ListFragment{
                         items.add(new Noti(obj.getInt("soundID"),
                                 obj.getDouble("latitude"),
                                 obj.getDouble("longitude"),
-                                obj.getString("created_at")));
+                                obj.getString("created_at"),
+                                obj.getString("address")));
                     }
                     Log.i("json", array.toString());
                 }catch (JSONException e){
@@ -102,8 +103,8 @@ public class FragSound extends ListFragment{
 
                 //리스트에 item 추가
                 setListAdapter(adapter);
-                for(int i=0; i< 8;i++){ //items.size()로 바꿀수도 있음
-                    adapter.addItem(ContextCompat.getDrawable(getActivity(), items.get(i).icon), items.get(i).name, items.get(i).created_at);
+                for(int i=0; i< items.size();i++){ //items.size()로 바꿀수도 있음
+                    adapter.addItem(ContextCompat.getDrawable(getActivity(), items.get(i).icon), items.get(i).name, items.get(i).created_at, items.get(i).address);
                 }
             }
         },

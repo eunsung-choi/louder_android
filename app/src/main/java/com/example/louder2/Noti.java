@@ -9,14 +9,16 @@ public class Noti {
     public double latitude;
     public double longitude;
     public String created_at;
+    public String address;
 
     public int icon;
     public String name;
-    public Noti(int soundID, double latitude, double longitude, String created_at){
+    public Noti(int soundID, double latitude, double longitude, String created_at, String address){
         this.soundID = soundID;
         this.latitude = latitude;
         this.longitude = longitude;
         this.created_at = created_at;
+        this.address = address;
 
         switch(this.soundID){ //아이콘 설정
             case 1: //살려주세요
