@@ -136,9 +136,9 @@ public class FragMap extends Fragment
                 lng[i] = items.get(i).longitude;
                 lat[i] = items.get(i).latitude;
             }
-            //지도 중심 설정(마지막 위도경도로 변경해야함)
-            double lat_m = lat[array_length-1];
-            double lng_m = lng[array_length-1];
+            //지도 중심 설정(마지막 위도경도로 변경해야함) => index를 0으로 설정해야함.
+            double lat_m = lat[0];
+            double lng_m = lng[0];
             LatLng position = new LatLng(lat_m, lng_m);
 
             //지도에 polyline 추가
