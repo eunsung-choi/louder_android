@@ -1,34 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+
+<RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <RelativeLayout
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <ImageView
+        android:id="@+id/image"
         android:layout_width="match_parent"
-        android:layout_marginLeft="@dimen/pageMarginAndOffset"
-        android:layout_marginRight="@dimen/pageMarginAndOffset"
-        android:layout_height="@dimen/frameSize"
-        android:orientation="vertical">
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/alarm1"/>
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:src="@drawable/mom_s"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_centerInParent="true"
-            android:fontFamily="@font/pretendard"
-            android:textSize="25dp"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:text="응급소리가 발생하면\n위치와 시간을 알려드려요."
-            />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_below="@id/image"
+        android:fontFamily="@font/pretendardmedium"
+        android:textSize="25dp"
+        android:textColor="@color/grey_1"
+        android:text="내 아이의 현재위치와\n이동경로를 확인할 수 있어요."
+        />
 
-    </RelativeLayout>
+</RelativeLayout>
 
 </FrameLayout>

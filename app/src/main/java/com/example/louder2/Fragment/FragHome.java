@@ -51,22 +51,22 @@ public class FragHome extends Fragment {
         viewGroup = (ViewGroup)inflater.inflate(R.layout.frag_home,container,false);
         Log.i(TAG, "onCreateView");
 
-        Button button1 = (Button)viewGroup.findViewById(R.id.button1);
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                activity.onFragmentChange(0);
-            }
-        });
-        Button button2 = (Button)viewGroup.findViewById(R.id.button2);
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                activity.onFragmentChange(1);
-            }
-        });
-        final float pageMargin= getResources().getDimensionPixelOffset(R.dimen.pageMargin);
-        final float pageOffset = getResources().getDimensionPixelOffset(R.dimen.offset);
+//        Button button1 = (Button)viewGroup.findViewById(R.id.button1);
+//        button1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                activity.onFragmentChange(0);
+//            }
+//        });
+//        Button button2 = (Button)viewGroup.findViewById(R.id.button2);
+//        button2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                activity.onFragmentChange(1);
+//            }
+//        });
+//        final float pageMargin= getResources().getDimensionPixelOffset(R.dimen.pageMargin);
+//        final float pageOffset = getResources().getDimensionPixelOffset(R.dimen.offset);
 
         setInit();
         return viewGroup;
@@ -119,7 +119,7 @@ public class FragHome extends Fragment {
         FragPagerAdapter SetupPagerAdapter = new FragPagerAdapter(getActivity()); //프래그먼트에서는 getActivity로 참조하고, 액티비티에서는 this를 사용.
         viewPageSetUp.setAdapter(SetupPagerAdapter); //FragPagerAdapter를 파라머티로 받고 ViewPager2에 전달 받는다.
         viewPageSetUp.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL); //방향은 가로로
-        viewPageSetUp.setOffscreenPageLimit(2); //페이지 한계 지정 갯수
+        viewPageSetUp.setOffscreenPageLimit(3); //페이지 한계 지정 갯수
         // 무제한 스크롤 처럼 보이기 위해서는 0페이지 부터가 아니라 1000페이지 부터 시작해서 좌측으로 이동할 경우 999페이지로 이동하여 무제한 처럼 스크롤 되는 것 처럼 표현하기 위함.
         viewPageSetUp.setCurrentItem(1000);
 
@@ -155,7 +155,7 @@ public class FragHome extends Fragment {
     }
     public class FragPagerAdapter extends FragmentStateAdapter { //뷰페이저2에서는 FragmentStateAdapter를 사용한다.
         // Real Fragment Total Count
-        private final int mSetItemCount = 2; //프래그먼트 갯수 지정
+        private final int mSetItemCount = 3; //프래그먼트 갯수 지정
 
         public FragPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
             super(fragmentActivity);
@@ -169,7 +169,7 @@ public class FragHome extends Fragment {
             switch( iViewIdx ) {
                 case 0    : { return new HomePage1(); } //프래그먼트 순서에 맞게 넣어줌.
                 case 1    : { return new HomePage2(); }
-//                case 2    : { return new HomePage3(); }
+                case 2    : { return new HomePage3(); }
 //            case 3    : { return new Frag4(); }
 //            case 4    : { return new Frag5(); }
 //            case 5    : { return new Frag6(); }
