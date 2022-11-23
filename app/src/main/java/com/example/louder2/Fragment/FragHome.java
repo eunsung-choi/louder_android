@@ -65,6 +65,8 @@ public class FragHome extends Fragment {
                 activity.onFragmentChange(1);
             }
         });
+        final float pageMargin= getResources().getDimensionPixelOffset(R.dimen.pageMargin);
+        final float pageOffset = getResources().getDimensionPixelOffset(R.dimen.offset);
 
         setInit();
         return viewGroup;
@@ -129,6 +131,7 @@ public class FragHome extends Fragment {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
 
+
             }
         });
         viewPageSetUp.setPageTransformer(new ViewPager2.PageTransformer() {
@@ -189,6 +192,7 @@ public class FragHome extends Fragment {
             return Integer.MAX_VALUE;
         }
     }
+
 
 }
 

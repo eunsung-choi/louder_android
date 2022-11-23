@@ -18,8 +18,8 @@ public class HomePage2 extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.home_page2,container,false);
-
+        ViewGroup view = (ViewGroup) inflater.inflate(
+                R.layout.home_page2, container, false);
         setInit(view);
 
         return view;
