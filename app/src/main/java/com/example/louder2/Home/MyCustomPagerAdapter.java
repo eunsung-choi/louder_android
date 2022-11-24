@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,12 +16,10 @@ import com.bumptech.glide.Glide;
 import com.example.louder2.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MyCustomPagerAdapter extends RecyclerView.Adapter<MyCustomPagerAdapter.ViewHolderPage> {
 
     private ArrayList<String> listData;
-    private ArrayList<Fragment> fragmentList = new ArrayList<>();
     Context con;
     ViewPager2 pager;
 
@@ -67,6 +66,7 @@ public class MyCustomPagerAdapter extends RecyclerView.Adapter<MyCustomPagerAdap
     public class ViewHolderPage extends RecyclerView.ViewHolder {
 
         private ImageView img;
+        private TextView text;
         private RelativeLayout rl_layout;
         String data;
 
@@ -77,12 +77,16 @@ public class MyCustomPagerAdapter extends RecyclerView.Adapter<MyCustomPagerAdap
 
             img = itemView.findViewById(R.id.image);
 
-
         }
 
         public void onBind(String data){
             this.data = data;
-            Glide.with(con).load(data).into(img);
+            if(data == "baby"){
+                Glide.with(con).load(R.drawable.babybaby).into(img);
+            }else if(data == "mom"){
+                Glide.with(con).load(R.drawable.mmom).into(img);
+            }else Glide.with(con).load(R.drawable.baby3).into(img);
+
 
         }
     }
