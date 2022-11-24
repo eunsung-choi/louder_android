@@ -5,57 +5,89 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import androidx.viewpager.widget.PagerAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
+import com.bumptech.glide.Glide;
 import com.example.louder2.R;
 
-public class MyCustomPagerAdapter extends PagerAdapter {
-    Context context;
-    int images[];
-    LayoutInflater layoutInflater;
+import java.util.ArrayList;
 
+public class MyCustomPagerAdapter extends RecyclerView.Adapter<MyCustomPagerAdapter.ViewHolderPage> {
 
-    public MyCustomPagerAdapter(Context context, int images[]) {
-        this.context = context;
-        this.images = images;
-        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    private ArrayList<String> listData;
+    Context con;
+    ViewPager2 pager;
+
+    public MyCustomPagerAdapter(ArrayList<String> data , Context con , ViewPager2 pager) {
+        this.listData = data;
+        this.pager = pager;
+        this.con =con;
     }
 
     @Override
-    public int getCount() {
-        return images.length;
+    public ViewHolderPage onCreateViewHolder(ViewGroup parent, int viewType) {
+        Context context = parent.getContext();
+        View view = LayoutInflater.from(context).inflate(R.layout.home_page1, parent, false);
+        return new ViewHolderPage(view);
     }
 
-    @Override
-    public boolean isViewFromObject(View view, Object object) {
-        return view == object;
-    }
 
     @Override
-    public Object instantiateItem(ViewGroup container, final int position) {
-        View itemView = layoutInflater.inflate(R.layout.home_page1, container, false);
+    public void onBindViewHolder(ViewHolderPage holder, int position) {
+        if(holder instanceof ViewHolderPage){
+// position = position%listData.size();
 
-        ImageView imageView = (ImageView) itemView.findViewById(R.id.image);
-        imageView.setImageResource(images[position]);
+            ViewHolderPage viewHolder = (ViewHolderPage) holder;
+            viewHolder.onBind(listData.get(position));
 
-        container.addView(itemView);
-
-//listening to image click
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "you clicked image " + position, Toast.LENGTH_LONG).show();
+            if (position == listData.size() - 2) {
+                pager.post(runnable);
             }
-        });
-
-        return itemView;
+        }
     }
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            listData.addAll(listData);
+            notifyDataSetChanged();
+        }
+    };
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((LinearLayout) object);
+    public int getItemCount() {
+        return listData.size();
+    }
+
+    public class ViewHolderPage extends RecyclerView.ViewHolder {
+
+        private ImageView img;
+        private TextView text;
+        private RelativeLayout rl_layout;
+        String data;
+
+
+
+        ViewHolderPage(View itemView) {
+            super(itemView);
+
+            img = itemView.findViewById(R.id.image);
+
+        }
+
+        public void onBind(String data){
+            this.data = data;
+            if(data == "baby"){
+                Glide.with(con).load(R.drawable.babybaby).into(img);
+            }else if(data == "mom"){
+                Glide.with(con).load(R.drawable.mmom).into(img);
+            }else Glide.with(con).load(R.drawable.baby3).into(img);
+
+
+        }
     }
 }
