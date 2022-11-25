@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -85,7 +84,7 @@ public class MyCustomPagerAdapter extends RecyclerView.Adapter<MyCustomPagerAdap
                 Glide.with(con).load(R.drawable.babybaby).into(img);
             }else if(data == "mom"){
                 Glide.with(con).load(R.drawable.mmom).into(img);
-            }else Glide.with(con).load(R.drawable.baby3).into(img);
+            }else Glide.with(con).load(R.drawable.baby4).into(img);
 
 
         }

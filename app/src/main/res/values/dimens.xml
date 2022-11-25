@@ -3,6 +3,6 @@
     <dimen name="pageMargin">100dp</dimen>
     <dimen name="offset">0dp</dimen>
     <dimen name="pageMarginAndOffset">0dp</dimen>
-    <dimen name="pageWidth">300dp</dimen>
+    <dimen name="pageWidth">350dp</dimen>
 <!--    <dimen name="frameSize">320dp</dimen>-->
 </resources>
