@@ -39,7 +39,7 @@ import me.relex.circleindicator.CircleIndicator;
 public class FragHome extends Fragment {
     MainActivity activity;
     private String TAG = "프래그먼트";
-    ViewPager2 viewPager;
+    ViewPager2 viewPager2;
     private ViewGroup viewGroup; //뷰그룹 객체 선언
     ListView listView;
 
@@ -79,12 +79,12 @@ public class FragHome extends Fragment {
         imgList.add("119");
 
         firstImageCount =imgList.size();
-        viewPager = view.findViewById(R.id.viewPager2);
-        viewPager.setAdapter(new MyCustomPagerAdapter(imgList,getActivity() ,viewPager));
+        viewPager2 = view.findViewById(R.id.viewPager2);
+        viewPager2.setAdapter(new MyCustomPagerAdapter(imgList,getActivity() ,viewPager2));
 
-        viewPager.setClipToPadding(false);
-        viewPager.setClipChildren(false);
-        viewPager.setOffscreenPageLimit(3);
+        viewPager2.setClipToPadding(false);
+        viewPager2.setClipChildren(false);
+        viewPager2.setOffscreenPageLimit(3);
 
         indicator = view.findViewById(R.id.indicator);
 
@@ -93,7 +93,7 @@ public class FragHome extends Fragment {
         float screenWidth = getResources().getDisplayMetrics().widthPixels ;// 스마트폰의 너비 길이를 가져옴
         final float offsetPx = screenWidth - pageMarginPx - pagerWidth;
 
-        viewPager.setPageTransformer((page, position) -> {
+        viewPager2.setPageTransformer((page, position) -> {
             float myOffset = position * -offsetPx;
 
             if (position < -1) {
@@ -110,7 +110,7 @@ public class FragHome extends Fragment {
         });
 
 
-        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
@@ -151,7 +151,7 @@ public class FragHome extends Fragment {
     private Runnable headerRunnable = new Runnable() {
         @Override
         public void run() {
-            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+            viewPager2.setCurrentItem(viewPager2.getCurrentItem() + 1, true);
 
         }
     };
