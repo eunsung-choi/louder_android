@@ -26,7 +26,6 @@
 <img width="40%" src="https://user-images.githubusercontent.com/78211281/208851926-cf49ad01-dc98-415a-86e4-580d31492af1.png"/>
 <img width="40%" src="https://user-images.githubusercontent.com/78211281/208852127-aa56f1f0-2826-471d-8cb1-bd450f0cdfeb.png"/>
 
-
 ## 딥러닝
 <img width="50%" src="https://user-images.githubusercontent.com/78211281/208848484-446aeea1-fca2-452f-a28b-5df073fae5e2.png"/>
 <img width="50%" src="https://user-images.githubusercontent.com/78211281/208848860-1d565f91-ae00-415d-8bb2-c6ff3ce4ca46.png"/>
@@ -35,7 +34,7 @@
 ## 서버
 <img width="40%" src="https://user-images.githubusercontent.com/78211281/208849156-ac7376c4-a376-4081-9c31-e180c6c8b2ec.png"/>
 <img width="40%" src="https://user-images.githubusercontent.com/78211281/208849421-22cf8277-f002-41e7-938a-1cebd81b1231.png"/>
-
+소스코드: https://github.com/Rayleigh190/SoundIoT_Sever
 
 ## 모바일
 <img width="70%" src="https://user-images.githubusercontent.com/78211281/208845838-9adf4704-cc77-4356-8fff-fe837ffa1d88.png"/>
