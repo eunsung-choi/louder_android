@@ -22,18 +22,22 @@
 
 ## 아두이노 
 <img width="70%" src="https://user-images.githubusercontent.com/78211281/208845324-02430b09-a23a-4aab-a31e-1d54ee823715.png"/>
+<img width="40%" src="https://user-images.githubusercontent.com/78211281/208849634-1e18632a-655a-4406-80fd-1fb5cf0f5020.png"/>
 
 
 ## 딥러닝
+<img width="50%" src="https://user-images.githubusercontent.com/78211281/208848484-446aeea1-fca2-452f-a28b-5df073fae5e2.png"/>
+<img width="50%" src="https://user-images.githubusercontent.com/78211281/208848860-1d565f91-ae00-415d-8bb2-c6ff3ce4ca46.png"/>
 <img width="70%" src="https://user-images.githubusercontent.com/78211281/208845610-f383384e-7a25-4293-9541-85ecb1dc0a9e.png"/>
 
 ## 서버
+<img width="40%" src="https://user-images.githubusercontent.com/78211281/208849156-ac7376c4-a376-4081-9c31-e180c6c8b2ec.png"/>
+<img width="40%" src="https://user-images.githubusercontent.com/78211281/208849421-22cf8277-f002-41e7-938a-1cebd81b1231.png"/>
+
 
 ## 모바일
 <img width="70%" src="https://user-images.githubusercontent.com/78211281/208845838-9adf4704-cc77-4356-8fff-fe837ffa1d88.png"/>
 <img width="40%" src="https://user-images.githubusercontent.com/78211281/208846005-4f99f7f9-098b-4eff-a7de-6fcdc6f7880c.png"/>
-
-
 
 
 ## 소리 발생시 알림
