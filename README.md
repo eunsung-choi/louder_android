@@ -1,5 +1,5 @@
 # Louder
-산학협력 프로젝트 : IoT를 활용한 지능형 소리 분석  
+**IoT를 활용한 지능형 소리 분석**  
 @Rayleigh190 @Starlight258 @eunsung-choi @127-A @alsdud019  
 ## 개발 파트  
 **아두이노**: 소리 인식, gps 위치 정보 전송 @127-A @alsdud019  
