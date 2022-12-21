@@ -1,5 +1,12 @@
 # Louder
-산학협력 프로젝트 : IoT를 활용한 지능형 소리 분석
+산학협력 프로젝트 : IoT를 활용한 지능형 소리 분석  
+@Rayleigh190 @Starlight258 @eunsung-choi @127-A @alsdud019  
+## 개발 파트  
+아두이노: 소리 인식, gps 위치 정보 전송 @127-A @alsdud019  
+딥러닝 : 살려주세요, 도와주세요, 울음 소리 판별 @eunsung-choi    
+서버: 소리 정보와 위치 정보 모바일로 전달 @Rayleigh190    
+모바일: 실시간 알림, 소리, 위치 정보, 경로 확인 @Starlight258 @eunsung-choi  
+
 
 ## 프로젝트 설명
 <img width="70%" src="https://user-images.githubusercontent.com/78211281/208844569-b07a2e04-76a8-4cfb-b07c-d53e305a3727.png"/>  
@@ -12,11 +19,7 @@
 <img width="60%" src="https://user-images.githubusercontent.com/78211281/208847213-de66b5e6-5b6a-4543-b342-74f2d830bf5a.png"/>  
 
 
-## 개발 파트  
-아두이노: 소리 인식, gps 위치 정보 전송  
-딥러닝 : 살려주세요, 도와주세요, 울음 소리 판별  
-서버: 소리 정보와 위치 정보 모바일로 전달  
-모바일: 실시간 알림, 소리, 위치 정보, 경로 확인   
+   
 ## 통신 흐름도
 <img width="70%" src="https://user-images.githubusercontent.com/78211281/208844982-dc18b881-2518-449a-a52f-bcb4913c5bfe.png"/>
 
@@ -39,7 +42,6 @@
 <img width="70%" src="https://user-images.githubusercontent.com/78211281/208845838-9adf4704-cc77-4356-8fff-fe837ffa1d88.png"/>
 <img width="40%" src="https://user-images.githubusercontent.com/78211281/208846005-4f99f7f9-098b-4eff-a7de-6fcdc6f7880c.png"/>
 
+# 구현 영상
 
-## 소리 발생시 알림
 
-## 모바일 인터페이스
