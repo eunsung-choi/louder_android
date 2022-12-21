@@ -17,7 +17,12 @@
 <img width="60%" src="https://user-images.githubusercontent.com/78211281/208847213-de66b5e6-5b6a-4543-b342-74f2d830bf5a.png"/>  
 위험 소리 인식시 보호자에게 정보를 전송한다.    
 아동 범죄를 예방하고, 발생시 빠르게 대처하도록 돕는다.
-   
+
+## 시연 영상
+***소리인식, 알림 영상***  
+https://youtu.be/nPZ32wyTeK4  
+***모바일 인터페이스***  
+https://youtube.com/shorts/_Cqz9zp1yh4
 ## 통신 흐름도
 <img width="70%" src="https://user-images.githubusercontent.com/78211281/208844982-dc18b881-2518-449a-a52f-bcb4913c5bfe.png"/>
 
@@ -44,6 +49,5 @@
 <img width="50%" src="https://user-images.githubusercontent.com/78211281/208852908-9e092f7c-183b-4f82-bcd4-d9fe3cd9011f.png"/>
 
 
-# 시연 영상
 
 
