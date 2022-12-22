@@ -20,7 +20,7 @@
 
 ## 시연 영상
 ***소리인식, 알림 영상***  
-https://youtu.be/nPZ32wyTeK4  
+https://youtu.be/0Pe_8sUvUWc  
 ***모바일 인터페이스***  
 https://youtube.com/shorts/_Cqz9zp1yh4
 ## 통신 흐름도
