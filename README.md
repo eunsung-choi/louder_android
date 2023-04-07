@@ -1,5 +1,8 @@
 # Louder
 **IoT를 활용한 지능형 소리 분석**  
+
+![KakaoTalk_Photo_2023-04-07-13-54-26](https://user-images.githubusercontent.com/78211281/230543576-e921c043-66ac-4aa2-b766-7b311d0ac154.jpeg)
+
 @Rayleigh190 @Starlight258 @eunsung-choi @127-A @alsdud019  
 ## 개발 파트  
 **아두이노**: 소리 인식, gps 위치 정보 전송 @127-A @alsdud019  
